@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Core;
 using DataAccess.Base;
+using DataAccess.Recipes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Users;
@@ -20,4 +21,9 @@ internal sealed class UserEntity : BaseEntity
     [Required]
     public required string Password { get; set; }
     
+    [InverseProperty(nameof(RecipeEntity.User))]
+    public ICollection<RecipeEntity> Recipes { get; set; }
+    
+    [InverseProperty(nameof(RecipeEntity.UserFavorites))]
+    public ICollection<RecipeEntity> FavoriteRecipes { get; set; }
 }
