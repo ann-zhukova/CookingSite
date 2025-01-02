@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using DataAccess.Base;
 using DataAccess.Ingredients;
 using DataAccess.Steps;
-using DataAccess.Types;
+using DataAccess.Type;
 using DataAccess.Users;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;

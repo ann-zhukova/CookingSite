@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataAccess.Type;
 using DataAccess.Users;
 using Domain.Users;
 using JetBrains.Annotations;
@@ -11,6 +12,7 @@ public class MappingProfile : Profile
     {
         CreateMap<User, UserEntity>();
         CreateMap<UserEntity, User>();
-
+        CreateMap<Domain.Types.Type, TypeEntity>();
+        CreateMap<TypeEntity, Domain.Types.Type>();
     }
 }

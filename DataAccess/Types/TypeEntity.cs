@@ -5,7 +5,7 @@ using DataAccess.Base;
 using DataAccess.Recipes;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Types;
+namespace DataAccess.Type;
 
 [Table("Types")]
 [Index(nameof(TypeName), IsUnique = true)]

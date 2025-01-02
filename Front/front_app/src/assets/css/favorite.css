@@ -1,0 +1,35 @@
+main {
+  display: block;
+}
+.scrollContainer {
+  width: 100%;
+  height: 200px;
+  padding: 14px;
+  overflow-x: scroll;
+  display: flex; /* Используем Flexbox для выравнивания элементов в линию */
+}
+/* Убираем полосу прокрутки */
+.scrollContainer::-webkit-scrollbar {
+  display: none; /* Скрываем полосу прокрутки */
+}
+.scrollable-item {
+  display: flex; /* Используем Flexbox для размещения карточек внутри */
+  flex: 0 0 auto; /* Элементы не будут сжиматься */
+  width: calc(30%); /* Ширина каждого элемента */
+  margin-right: 16px; /* Отступ между элементами */
+}
+
+.card {
+  background-color: #DBDEDD;
+  margin: 0; /* Убираем отступы, чтобы избежать лишнего пространства */
+  height: 200px;
+  width: 100%; /* Занимает всю ширину родительского элемента */
+  flex: 1 1 auto;
+}
+
+.scrollMenu{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

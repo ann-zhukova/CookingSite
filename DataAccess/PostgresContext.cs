@@ -1,4 +1,5 @@
-﻿using DataAccess.Users;
+﻿using DataAccess.Type;
+using DataAccess.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
@@ -13,6 +14,7 @@ namespace DataAccess;
 internal sealed class PostgresContext : DbContext
 {
     public DbSet<UserEntity> Users { get; set; }
+    public DbSet<TypeEntity> Types { get; set; }
 
     public PostgresContext(DbContextOptions<PostgresContext> options) : base(options)
     {

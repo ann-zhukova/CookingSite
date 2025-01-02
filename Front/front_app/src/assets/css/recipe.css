@@ -1,0 +1,68 @@
+main {
+    display: block;
+}
+
+.recipe-head{
+    margin: 8px;
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    height: auto;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.recipe-ingredients{
+    padding: 8px;
+    display: block;
+    border-radius: 12px;
+    background-color: #DBDEDD;
+    font-size: medium;
+    width: calc(100% - 16px);
+}
+h1{
+    font-size: 36px;
+}
+
+.recipe-img{
+    width: auto;
+    height: 383px;
+    flex: 0 0 383px;
+}
+
+.recipe-info{
+    padding: 16px;
+    display: block;
+    width: calc(50% - 32px);
+}
+.recipe-name{
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.recipe-favorite{
+    width: 12px; /* Ширина кнопки */
+    height: 12px; /* Высота кнопки */
+    border-radius: 50%; /* Делает кнопку круглой */
+    display: flex; /* Используем flexbox для выравнивания */
+    align-items: center; /* Вертикальное выравнивание по центру */
+    justify-content: center; /* Горизонтальное выравнивание по центру */
+}
+.button-image {
+    width: 20px; /* Ширина изображения */
+    height: 20px; /* Высота изображения */
+    margin-right: 8px; /* Отступ между изображением и текстом */
+}
+
+.recipe-steps{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.recipe-step{
+    padding: 16px;
+    width: calc(30% - 22px);
+}

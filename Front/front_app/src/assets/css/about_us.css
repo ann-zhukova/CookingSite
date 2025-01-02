@@ -1,0 +1,7 @@
+.main-about {
+    display: flex;
+    flex-direction: row;
+  }
+.section-about{
+    display: block;
+  }
