@@ -12,7 +12,7 @@ namespace DataAccess.Ingredients;
 [UsedImplicitly]
 [PutInIoC(Lifetime = ServiceLifetime.Scoped)]
 internal sealed class IngredientsRepository(PostgresContext context, IMapper mapper)
-    : BaseRepository(context, mapper)
+    : BaseRepository(context, mapper), IIngredientsRepository
 {
     public async Task<IReadOnlyCollection<Ingredient>> GetIngredientsAsync()
     {

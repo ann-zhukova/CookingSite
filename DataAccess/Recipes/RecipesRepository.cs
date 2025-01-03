@@ -11,7 +11,7 @@ namespace DataAccess.Recipes;
 [UsedImplicitly]
 [PutInIoC(Lifetime = ServiceLifetime.Scoped)]
 internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
-    : BaseRepository(context, mapper)
+    : BaseRepository(context, mapper), IRecipesRepository
 {
     public async Task<IReadOnlyCollection<Recipe>> GetRecipesAsync()
     {
@@ -102,7 +102,7 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
         return recipeEntity.Id;
     }
 
-    public async Task DeleteStepAsync(Guid id)
+    public async Task DeleteRecipeAsync(Guid id)
     {
         await Context.Recipes.Where(u => u.Id == id).ExecuteDeleteAsync();
     }

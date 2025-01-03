@@ -12,7 +12,7 @@ namespace DataAccess.Steps;
 [UsedImplicitly]
 [PutInIoC(Lifetime = ServiceLifetime.Scoped)]
 internal sealed class StepsRepository(PostgresContext context, IMapper mapper)
-    : BaseRepository(context, mapper)
+    : BaseRepository(context, mapper), IStepsRepository
 {
     public async Task<IReadOnlyCollection<Step>> GetStepsAsync()
     {
