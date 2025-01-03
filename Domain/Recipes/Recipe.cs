@@ -6,6 +6,8 @@ namespace Domain.Recipes;
 
 public class Recipe
 {
+    public Guid Id { get; set; }
+    
     public string Name { get; set; }
     
     public int PrepareTime { get; set; }
@@ -18,7 +20,7 @@ public class Recipe
     
     public ICollection<Step> Steps { get; set; }
     
-    public ICollection<Type> Types { get; set; }
+    public ICollection<Domain.Types.Type> Types { get; set; }
     
     public ICollection<User> UserFavorites { get; set; }
 }

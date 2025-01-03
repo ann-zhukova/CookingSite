@@ -1,5 +1,9 @@
-﻿using DataAccess.Type;
+﻿using DataAccess.Ingredients;
+using DataAccess.Recipes;
+using DataAccess.Steps;
+using DataAccess.Type;
 using DataAccess.Users;
+using Domain.Recipes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
@@ -15,6 +19,11 @@ internal sealed class PostgresContext : DbContext
 {
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<TypeEntity> Types { get; set; }
+    public DbSet<StepEntity> Steps { get; set; }
+    
+    public DbSet<RecipeEntity> Recipes { get; set; }
+    
+    public DbSet<IngredientEntity> Ingredients { get; set; }
 
     public PostgresContext(DbContextOptions<PostgresContext> options) : base(options)
     {
