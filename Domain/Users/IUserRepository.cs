@@ -7,7 +7,8 @@ public interface IUserRepository : IBaseRepository
     public Task<IReadOnlyCollection<User>> GetUsersAsync();
     public Task<User> GetUserByIdAsync(Guid userId);
     public Task<User> GetUserByNameAsync(String userName);
-    
+    public Task<User> GetUserFavoritesAsync(string userName);
+    public Task<User> GetUserRecipesAsync(string userName);
     public Task<Guid> CreateUserAsync(User user);
     public Task<Guid?> UpdateUserAsync(User user);
     public Task DeleteUserAsync(Guid id);

@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using Core.IoC;
 using Domain.Users;
+using Front.Models.Recipe;
 using Front.Models.User;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -26,17 +27,7 @@ public class UserHelper : IUserHelper
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
     }
-
-    public IActionResult OkResponse(object value)
-    {
-        return new OkObjectResult(value);
-    }
-
-    public IActionResult BadRequestResponse(string message)
-    {
-        return new BadRequestObjectResult(message);
-    }
-
+    
     public string HashPassword(string password)
     {
         using (var sha256 = SHA256.Create())
@@ -46,22 +37,26 @@ public class UserHelper : IUserHelper
         }
     }
 
-    public async Task<IActionResult> RegisterUser(UserRegisterRequestJs request)
+ public async Task<LoginResponseJsModel>  RegisterUser(UserRegisterRequestJs request)
     {
         var hashedPassword = HashPassword(request.Password);
-        var newUser = new User(request.UserName,  hashedPassword, true);
-
+        var newUser = new User(request.UserName,  hashedPassword, request.Email);
+        var user = await _userRepository.GetUserByNameAsync(request.UserName);
+        if (!(user is null))
+        {
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Пользователь уже существует" };
+        }
         var newUserGuid = await _userRepository.CreateUserAsync(newUser);
         await _userRepository.SaveChangesAsync();
         if (newUserGuid == Guid.Empty)
         {
-            return BadRequestResponse("Invalid username");
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Ошибка при регистрации" };
         }
 
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, request.UserName),
-            new Claim(ClaimTypes.Role, UserRoles.User.ToString()) //todo admin or player
+            new Claim(ClaimTypes.Role, UserRoles.User.ToString()) 
         };
 
         // создаем объект ClaimsIdentity
@@ -71,19 +66,20 @@ public class UserHelper : IUserHelper
         await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(claimsIdentity));
 
-        return OkResponse(newUserGuid);
+        return new();
     }
 
-    public async Task<IActionResult> LoginUser(UserLoginRequestJs request)
+    public async Task<LoginResponseJsModel> LoginUser(UserLoginRequestJs request)
     {
         var user = await _userRepository.GetUserByNameAsync(request.UserName);
-        if (user.Id == Guid.Empty)
+        if (user is null)
         {
-            return BadRequestResponse("Пользователя не сузествует");
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Пользователь не найден" };
         }
 
         if (HashPassword(request.Password) != user.Password)
-            return BadRequestResponse("Wrong password");
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Неверный пароль" };
+
 
         var claims = new List<Claim>
         {
@@ -95,6 +91,41 @@ public class UserHelper : IUserHelper
         await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(claimsIdentity));
 
-        return OkResponse(user.Id);
+        return new();
+    }
+
+    public async Task<UserResponseJsModel> Account(String userName)
+    {
+
+        var user = await _userRepository.GetUserByNameAsync(userName);
+        if (user is null)
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Пользователь не найден" };
+        var userAccount = await _userRepository.GetUserByIdAsync(user.Id);
+        if (userAccount is null)
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Ошибка получения данных"};
+        return new UserResponseJsModel() {
+            UserName = userAccount.UserName,
+        };
+    }
+
+    public async Task<FavoritesResponseJsModel> Favorites(String userName)
+    {
+        var user = await _userRepository.GetUserFavoritesAsync(userName);
+        if (user is null)
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Пользователь не найден" };
+        return new FavoritesResponseJsModel() {
+             Recipes = user.Recipes.Select(u => _mapper.Map<RecipeResponseJs>(u)).ToList(),
+        };
+    }
+    
+    public async Task<RecipesResponseJsModel> UserRecipes(String userName)
+    {
+        var user = await _userRepository.GetUserRecipesAsync(userName);
+        if (user is null)
+            return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Пользователь не найден" };
+        
+        return new RecipesResponseJsModel() {
+            Recipes = user.Recipes.Select(u => _mapper.Map<RecipeResponseJs>(u)).ToList(),
+        };
     }
 }

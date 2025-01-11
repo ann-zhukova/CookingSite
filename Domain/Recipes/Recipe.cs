@@ -12,6 +12,10 @@ public class Recipe
     
     public int PrepareTime { get; set; }
     
+    public int YourTime { get; set; }
+    
+    public string Image { get; set; }
+    
     public Guid UserId { get; set; }
     
     public User User { get; set; }

@@ -22,11 +22,108 @@ namespace DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("DataAccess.Ingredients.IngredientEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("IngredientName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientName")
+                        .IsUnique();
+
+                    b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("DataAccess.Recipes.RecipeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PrepareTime")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("YourTime")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrepareTime");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("DataAccess.Steps.StepEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RecipetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("StepDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("StepNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipetId", "StepNumber")
+                        .IsUnique();
+
+                    b.ToTable("Steps");
+                });
+
+            modelBuilder.Entity("DataAccess.Type.TypeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TypeName")
+                        .IsUnique();
+
+                    b.ToTable("Types");
+                });
+
             modelBuilder.Entity("DataAccess.Users.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -47,6 +144,128 @@ namespace DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("IngredientEntityRecipeEntity", b =>
+                {
+                    b.Property<Guid>("IngredientsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RecipesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("IngredientsId", "RecipesId");
+
+                    b.HasIndex("RecipesId");
+
+                    b.ToTable("IngredientEntityRecipeEntity");
+                });
+
+            modelBuilder.Entity("RecipeEntityTypeEntity", b =>
+                {
+                    b.Property<Guid>("RecipesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TypesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RecipesId", "TypesId");
+
+                    b.HasIndex("TypesId");
+
+                    b.ToTable("RecipeEntityTypeEntity");
+                });
+
+            modelBuilder.Entity("RecipeEntityUserEntity", b =>
+                {
+                    b.Property<Guid>("FavoriteRecipesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserFavoritesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FavoriteRecipesId", "UserFavoritesId");
+
+                    b.HasIndex("UserFavoritesId");
+
+                    b.ToTable("RecipeEntityUserEntity");
+                });
+
+            modelBuilder.Entity("DataAccess.Recipes.RecipeEntity", b =>
+                {
+                    b.HasOne("DataAccess.Users.UserEntity", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccess.Steps.StepEntity", b =>
+                {
+                    b.HasOne("DataAccess.Recipes.RecipeEntity", "Recipe")
+                        .WithMany("Steps")
+                        .HasForeignKey("RecipetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("IngredientEntityRecipeEntity", b =>
+                {
+                    b.HasOne("DataAccess.Ingredients.IngredientEntity", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Recipes.RecipeEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RecipesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RecipeEntityTypeEntity", b =>
+                {
+                    b.HasOne("DataAccess.Recipes.RecipeEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RecipesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Type.TypeEntity", null)
+                        .WithMany()
+                        .HasForeignKey("TypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RecipeEntityUserEntity", b =>
+                {
+                    b.HasOne("DataAccess.Recipes.RecipeEntity", null)
+                        .WithMany()
+                        .HasForeignKey("FavoriteRecipesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Users.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserFavoritesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DataAccess.Recipes.RecipeEntity", b =>
+                {
+                    b.Navigation("Steps");
+                });
+
+            modelBuilder.Entity("DataAccess.Users.UserEntity", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

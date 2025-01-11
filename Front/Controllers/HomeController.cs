@@ -22,7 +22,50 @@ public class HomeController : Controller
         var res = await _userRepository.GetUsersAsync();
         return View("Index");
     }
+    [HttpGet]
+    public IActionResult Index()
+    {
+        return View();
+    }
 
+    [HttpGet]
+    [Route("login")]
+    public IActionResult GetLogin()
+    {
+        return View("Index");
+    }
+
+    [HttpGet]
+    [Route("register")]
+    public IActionResult GetRegister()
+    {
+        return View("Index");
+    }
+    
+    [HttpGet]
+    [Route("account")]
+    public IActionResult Account()
+    {
+        return View("Index");
+    }
+    [HttpGet]
+    [Route("favorites")]
+    public IActionResult Favorites()
+    {
+        return View("Index");
+    }
+    [HttpGet]
+    [Route("my-recipes")]
+    public IActionResult MyRecipes()
+    {
+        return View("Index");
+    }
+    [HttpGet]
+    [Route("recipe{id}")]
+    public IActionResult Recipe()
+    {
+        return View("Index");
+    }
     public IActionResult Privacy()
     {
         return View();

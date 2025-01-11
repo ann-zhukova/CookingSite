@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.IoC;
 using DataAccess.Base;
+using Domain;
 using Domain.Recipes;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +16,88 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
 {
     public async Task<IReadOnlyCollection<Recipe>> GetRecipesAsync()
     {
-        var recipes = await Context.Recipes.AsNoTracking().ToListAsync();
+        var recipes = await Context.Recipes
+            .AsNoTracking()
+            .Include(r=>r.Ingredients)
+            .Include(r=>r.Types)
+            .ToListAsync();
         return Mapper.Map<Recipe[]>(recipes);
+    }
+    
+    public async Task<IReadOnlyCollection<Recipe>> GetRecipesAsync(RecipeFilter filter)
+    {
+        var query = Context.Recipes
+            .Include(s => s.Types)
+            .Include(r=>r.Ingredients)
+            .AsNoTracking()
+            .AsQueryable();
+        
+        if (filter.MinTime.HasValue)
+        {
+            query = query.Where(s => s.PrepareTime >= filter.MinTime.Value);
+        }
+
+        if (filter.MaxTime.HasValue)
+        {
+            query = query.Where(s => s.PrepareTime <= filter.MaxTime.Value);
+        }
+
+        if (filter.Types != null && filter.Types.Any())
+        {
+            query = query.Where(s => s.Types.Any(t => filter.Types.Contains(t.TypeName)));
+        }
+        if (filter.Ingredients != null && filter.Ingredients.Any())
+        {
+            query = query.Where(s => s.Ingredients.Any(t => filter.Ingredients.Contains(t.IngredientName)));
+        }
+        
+        // Сортировка в зависимости от выбранного параметра
+        switch (filter.SortBy)
+        {
+            case "yourTime":
+                query = query.OrderBy(s => s.YourTime);
+                break;
+            case "PrepareTime":
+                query = query.OrderByDescending(s => s.PrepareTime);
+                break;
+            default:
+                query = query.OrderBy(s => s.Id); // по умолчанию сортируем по id
+                break;
+        }
+        // Пагинация
+        var skip = (filter.Page - 1) * filter.PageSize;
+        query = query
+            .Skip(skip)
+            .Take(filter.PageSize);
+
+        var recipes = await query.ToListAsync();
+        return Mapper.Map<Recipe[]>(recipes);
+    }
+
+    public async Task<int> CountRecipesAsync(RecipeFilter filter)
+    {
+        var query = Context.Recipes.AsQueryable();
+        
+        if (filter.MinTime.HasValue)
+        {
+            query = query.Where(s => s.PrepareTime >= filter.MinTime.Value);
+        }
+
+        if (filter.MaxTime.HasValue)
+        {
+            query = query.Where(s => s.PrepareTime <= filter.MaxTime.Value);
+        }
+
+        if (filter.Types != null && filter.Types.Any())
+        {
+            query = query.Where(s => s.Types.Any(t => filter.Types.Contains(t.TypeName)));
+        }
+        if (filter.Ingredients != null && filter.Ingredients.Any())
+        {
+            query = query.Where(s => s.Ingredients.Any(t => filter.Ingredients.Contains(t.IngredientName)));
+        }
+
+        return await query.CountAsync();
     }
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
@@ -50,6 +131,8 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
         recipeEntity.Name = recipe.Name;
         recipeEntity.PrepareTime = recipe.PrepareTime;
         recipeEntity.UserId = recipe.UserId;
+        recipeEntity.Image = recipe.Image;
+        recipeEntity.YourTime = recipe.YourTime;
         
         var userFavorites = await Context.Users
             .Where(u => recipe.UserFavorites.Select(f=>f.Id).Contains(u.Id))

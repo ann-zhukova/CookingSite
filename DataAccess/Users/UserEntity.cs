@@ -16,6 +16,9 @@ internal sealed class UserEntity : BaseEntity
     [Required]
     public required string UserName { get; set; }
     
+    [StringLength(Constants.EmailLength)]
+    [Required]
+    public string? Email { get; set; }
 
     [StringLength(Constants.PasswordLength)]
     [Required]

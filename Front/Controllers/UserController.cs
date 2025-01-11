@@ -1,9 +1,12 @@
-﻿using Front.Helpers.UserHelper;
+﻿using System.Security.Claims;
+using Core.Extensions;
+using Front.Helpers.UserHelper;
 using Front.Models.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Front.Extensions;
 
 namespace Front.Controllers;
 
@@ -18,48 +21,26 @@ public class UserController : Controller
         _logger = logger;
         _userHelper = userHelper;
     }
-
-    [HttpGet]
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    [HttpGet]
-    [Route("login")]
-    public IActionResult GetLogin()
-    {
-        return View("Index");
-    }
-
-    [HttpGet]
-    [Route("register")]
-    public IActionResult GetRegister()
-    {
-        return View("Index");
-    }
-
+    
     [HttpPost]
     [AllowAnonymous]
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterRequestJs request)
     {
         _logger.Log(LogLevel.Information, request.ToString());
-        return await _userHelper.RegisterUser(request);
+        return await _userHelper.RegisterUser(request).Convert(this.ToActionResult);
     }
 
     [HttpPost]
     [AllowAnonymous]
     [Route("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginRequestJs request)
+    public Task<IActionResult> Login([FromBody] UserLoginRequestJs request)
     {
-        _logger.Log(LogLevel.Information, request.ToString());
-        return await _userHelper.LoginUser(request);
+        return _userHelper.LoginUser(request).Convert(this.ToActionResult);
     }
 
-
     [HttpPost]
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize]
     [Route("logout")]
     public async Task<IActionResult> Logout()
     {
@@ -68,5 +49,30 @@ public class UserController : Controller
 
         // Вернем сообщение об успешном выходе
         return Ok("Logged out successfully");
+    }
+
+    [HttpGet]
+    [Authorize]
+    [Route("account")]
+    public async Task<IActionResult> Account()
+    {
+        var userName = User.FindFirstValue(ClaimTypes.Name);
+        return await _userHelper.Account(userName).Convert(this.ToActionResult);
+    }
+    
+    [HttpGet]
+    [Route("recipes")]
+    public async Task<IActionResult> GetUserRecipe(Guid id)
+    {
+        var userName = User.FindFirstValue(ClaimTypes.Name);
+        return await _userHelper.UserRecipes(userName).Convert(this.ToActionResult);
+    }
+    
+    [HttpGet]
+    [Route("recipes/favorites")]
+    public async Task<IActionResult> GetFavoritesRecipe(Guid id)
+    {
+        var userName = User.FindFirstValue(ClaimTypes.Name);
+        return await _userHelper.Favorites(userName).Convert(this.ToActionResult);
     }
 }

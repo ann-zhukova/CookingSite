@@ -1,20 +1,13 @@
 ﻿import React, { useState, useEffect } from 'react';
 
-const TimeSlider = () => {
-    // State to hold the min and max values
-    const [minValue, setMinValue] = useState(15);
-    const [maxValue, setMaxValue] = useState(60);
+const TimeSlider = ({ minTime = 1, maxTime = 720, onTimeChange }) => {
+    const [minValue, setMinValue] = useState(minTime);
+    const [maxValue, setMaxValue] = useState(maxTime);
 
-    // Effect to update the displayed values when the component mounts
+    // Обновляем значения времени при изменении слайдера
     useEffect(() => {
-        updateValues();
-    }, []);
-
-    // Function to update the values
-    const updateValues = () => {
-        // This function can be used if you need to perform any side effects
-        // when the values change, but in this case, it's not necessary.
-    };
+        onTimeChange(minValue, maxValue);
+    }, [minValue, maxValue]);
 
     return (
         <div>

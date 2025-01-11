@@ -24,6 +24,24 @@ internal sealed class UserRepository(PostgresContext context, IMapper mapper)
         var user = await Context.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Id == userId);
         return Mapper.Map<User>(user);
     }
+    
+    public async Task<User> GetUserRecipesAsync(string userName)
+    {
+        var user = await Context.Users
+            .AsNoTracking()
+            .Include(u=>u.Recipes)
+            .SingleOrDefaultAsync(u => u.UserName == userName);
+        return Mapper.Map<User>(user);
+    }
+    
+    public async Task<User> GetUserFavoritesAsync(string userName)
+    {
+        var user = await Context.Users
+            .AsNoTracking()
+            .Include(u=>u.FavoriteRecipes)
+            .SingleOrDefaultAsync(u => u.UserName == userName);
+        return Mapper.Map<User>(user);
+    }
 
     public async Task<User> GetUserByNameAsync(string userName)
     {
@@ -49,6 +67,7 @@ internal sealed class UserRepository(PostgresContext context, IMapper mapper)
 
         userEntity.UserName = user.UserName;
         userEntity.Password = user.Password;
+        userEntity.Email = user.Email;
 
         return userEntity.Id;
     }

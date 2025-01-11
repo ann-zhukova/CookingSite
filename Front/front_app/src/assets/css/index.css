@@ -1,16 +1,18 @@
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Минимальная высота 100% от высоты окна */
-    margin: 0; /* Убираем отступы */
+    min-height: 100vh; 
+    margin: 0; 
     font-family: Arial, Helvetica, sans-serif;
     color: #41574D;
     --color-headline: #99a3ba;
     width: 100%;
+    background-color: #F7FBF9;
 }
 main{
     display: flex;
     width: 100%;
+    flex: 1;
 }
 
 footer {
@@ -19,12 +21,15 @@ footer {
     background-color: #DBDEDD;
     text-align: left; /* Выравнивание текста*/
 }
+
 aside {
     width: calc(40% - 32px);
     height: 80%;
     top: 0; /* Располагает в верхней части страницы */
     left: 0; /* Располагает в левой части страницы */
+    position: sticky;
 }
+
 .logo {
     width: auto;
     height: 80px;
@@ -36,11 +41,13 @@ aside {
     display: flex;               
     align-items: center;       
 }
+
 nav{
   display: flex; 
   align-items: center;  
   justify-content: center;
 }
+
 .header-block{
     margin-right: 16px;
     font-size: larger;
@@ -50,18 +57,18 @@ nav{
 .header-block:hover{
     font-weight: bold;
 }
+
 a:link, a:visited {
     color: #41574D; 
     text-decoration: none; 
 }
+
 a:hover {
     font-weight: bold;
 }
+
 .cabinet-link{
     margin-left: auto;
-}
-body {
-    background-color: #F7FBF9;
 }
 
 .sort{
@@ -74,17 +81,18 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .sort > *{
     display: flex;
     padding: 12px;
     flex: 0 1; 
 }
+
 .filtration{
     background-color: #DBDEDD;
     border-radius:  12px;
     padding: 12px;
     margin: 16px 16px 16px 16px;
-
 }
 
 .filtration > * {
@@ -105,7 +113,7 @@ body {
     flex-direction: row;
     flex: 1 1 auto;
     height: 200px;
-    width: calc(40% - 32px);
+    width: 100%;
     border-radius: 12px;
   }
   
@@ -137,11 +145,13 @@ body {
   }
   
   section {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap; 
-  width: 100%;
-  padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; 
+    width: 100%;
+    flex: 1;
+    justify-content: space-around;
+    padding: 16px;
   }
 
 button{
@@ -174,7 +184,7 @@ button:hover {
   }
   
   .input-ranges[type='range']::-webkit-slider-runnable-track {
-    width: calc(100%-1px);
+    width: calc(100%- 1px);
     height: 1px;
     background: var(--color-headline);
   }
@@ -249,3 +259,37 @@ button:hover {
     margin-top: 8px;
     font-size: 14px;
   }
+
+
+.card {
+    background-color: #DBDEDD;
+    margin: 16px;
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+}
+
+.card-img {
+    width: 150px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+
+

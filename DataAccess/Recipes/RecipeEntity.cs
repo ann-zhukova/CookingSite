@@ -19,6 +19,10 @@ internal sealed class  RecipeEntity: BaseEntity
     
     public int PrepareTime { get; set; }
     
+    public int YourTime { get; set; }
+    
+    public string Image { get; set; }
+    
     public Guid UserId { get; set; }
     
     [ForeignKey("UserId")]
