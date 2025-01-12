@@ -12,6 +12,7 @@ import AddRecipe from "./pages/AddRecipe";
 import MyRecipes from "./pages/MyRecipies";
 import Favorites from "./pages/Favorites";
 import Main from "./pages/Main";
+import Recipe from "./pages/Recipe";
 
 const App = () => (
     <div>
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/add_recipe" element={<AddRecipe/>}/>
             <Route path="/my-recipes" element={<MyRecipes/>}/>
             <Route path="/favorites" element={<Favorites/>}/>
+            <Route path="/recipe/:recipeId" element={<Recipe/>}/>
         </Routes>
         <Footer />
     </div>

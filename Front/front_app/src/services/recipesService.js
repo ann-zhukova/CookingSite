@@ -1,4 +1,4 @@
-﻿import {getFiltered} from "./requests";
+﻿import {getFiltered, getById} from "./requests";
 const getRecipes = (filter) => {
     // Создаем объект queryParams, фильтруя undefined и пустые значения
     const queryParams = {};
@@ -18,4 +18,8 @@ const getRecipes = (filter) => {
     return getFiltered('recipes', queryParams);
 };
 
-export {getRecipes}
+const getRecipe = (id)=>{
+    return getById('recipes', id);
+};
+
+export {getRecipes, getRecipe}

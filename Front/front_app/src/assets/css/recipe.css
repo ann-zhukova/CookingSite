@@ -35,12 +35,11 @@ h1{
 .recipe-name{
     padding: 8px;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
 }
 .recipe-favorite{
     width: 12px; /* Ширина кнопки */
-    height: 12px; /* Высота кнопки */
     border-radius: 50%; /* Делает кнопку круглой */
     display: flex; /* Используем flexbox для выравнивания */
     align-items: center; /* Вертикальное выравнивание по центру */

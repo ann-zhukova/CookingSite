@@ -61,7 +61,7 @@ public class HomeController : Controller
         return View("Index");
     }
     [HttpGet]
-    [Route("recipe{id}")]
+    [Route("recipe/{id}")]
     public IActionResult Recipe()
     {
         return View("Index");

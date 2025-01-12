@@ -147,8 +147,7 @@ a:hover {
   section {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap; 
-    width: 100%;
+    flex-wrap: wrap;
     flex: 1;
     justify-content: space-around;
     padding: 16px;

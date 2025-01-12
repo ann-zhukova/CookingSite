@@ -102,7 +102,13 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
     {
-        var recipe = await Context.Recipes.AsNoTracking().SingleOrDefaultAsync(r => r.Id == id);
+        var recipe = await Context
+            .Recipes
+            .AsNoTracking()
+            .Include(r=>r.Ingredients)
+            .Include(r=>r.Types)
+            .Include(r=>r.Steps)
+            .SingleOrDefaultAsync(r => r.Id == id);
         return Mapper.Map<Recipe>(recipe);
     }
 
