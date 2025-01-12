@@ -28,5 +28,11 @@ public class RecipeController: Controller
     {
         return await _recipeHelper.GetRecipe(id).Convert(this.ToActionResult);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateRecipe(RecipeRequestJs recipe)
+    {
+        return await _recipeHelper.CreateRecipe(recipe).Convert(this.ToActionResult);
+    }
     
 }

@@ -44,11 +44,11 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
 
         if (filter.Types != null && filter.Types.Any())
         {
-            query = query.Where(s => s.Types.Any(t => filter.Types.Contains(t.TypeName)));
+            query = query.Where(s => s.Types.Any(t => filter.Types.Contains(t.Id)));
         }
         if (filter.Ingredients != null && filter.Ingredients.Any())
         {
-            query = query.Where(s => s.Ingredients.Any(t => filter.Ingredients.Contains(t.IngredientName)));
+            query = query.Where(s => s.Ingredients.Any(t => filter.Ingredients.Contains(t.Id)));
         }
         
         // Сортировка в зависимости от выбранного параметра
@@ -57,7 +57,7 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
             case "yourTime":
                 query = query.OrderBy(s => s.YourTime);
                 break;
-            case "PrepareTime":
+            case "prepareTime":
                 query = query.OrderByDescending(s => s.PrepareTime);
                 break;
             default:
@@ -90,11 +90,11 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
 
         if (filter.Types != null && filter.Types.Any())
         {
-            query = query.Where(s => s.Types.Any(t => filter.Types.Contains(t.TypeName)));
+            query = query.Where(s => s.Types.Any(t => filter.Types.Contains(t.Id)));
         }
         if (filter.Ingredients != null && filter.Ingredients.Any())
         {
-            query = query.Where(s => s.Ingredients.Any(t => filter.Ingredients.Contains(t.IngredientName)));
+            query = query.Where(s => s.Ingredients.Any(t => filter.Ingredients.Contains(t.Id)));
         }
 
         return await query.CountAsync();

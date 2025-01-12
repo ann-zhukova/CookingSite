@@ -114,7 +114,7 @@ public class UserHelper : IUserHelper
         if (user is null)
             return new() { ErrorCode = Core.Constants.ErrorCode.Forbidden, ErrorDetail = "Пользователь не найден" };
         return new FavoritesResponseJsModel() {
-             Recipes = user.Recipes.Select(u => _mapper.Map<RecipeResponseJs>(u)).ToList(),
+             Recipes = user.FavoriteRecipes.Select(u => _mapper.Map<RecipeResponseJs>(u)).ToList(),
         };
     }
     

@@ -30,6 +30,8 @@ public class MappingProfile : Profile
         CreateMap<StepResponseJs, Step>();
         CreateMap<Recipe, RecipeResponseJs>();
         CreateMap<RecipeResponseJs, Recipe>();
+        CreateMap<RecipeRequestJs, Recipe>();
+        CreateMap<Recipe, RecipeRequestJs>();
         CreateMap<Recipe, RecipeDetailsResponseJs>();
         CreateMap<RecipeDetailsResponseJs, Recipe>();
         CreateMap<Ingredient, IngredientResponseJs>();

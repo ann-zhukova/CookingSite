@@ -66,6 +66,12 @@ public class HomeController : Controller
     {
         return View("Index");
     }
+    [HttpGet]
+    [Route("add_recipe")]
+    public IActionResult AddRecipe()
+    {
+        return View("Index");
+    }
     public IActionResult Privacy()
     {
         return View();

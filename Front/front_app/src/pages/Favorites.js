@@ -4,11 +4,12 @@ import Card from "../components/Card";
 import "../assets/css/favorite.css"; 
 
 const Favorites = () => {
-
+    const [recipes, setRecipes] = useState([]);
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
                 const response = await get('users/recipes/favorites');
+                console.log(response);
                 setRecipes(response.recipes);
             } catch (error) {
                 alert('Ошибка при загрузке избранных рецептов.');
@@ -18,39 +19,7 @@ const Favorites = () => {
 
         fetchRecipes();
     }, []);
-
-    // Данные рецептов
-    const [recipes, setRecipes] = useState([
-        {
-            imgSrc: "../img/pi.jpg",
-            title: "Цветаевский пирог",
-            tags: ["десерты", "пироги"],
-            description: "ягоды, сметана, сахар, мука, крахмал, яйца",
-            link: "/recipe/1",
-        },
-        {
-            imgSrc: "../img/sup.jpg",
-            title: "Грибной крем-суп",
-            tags: ["первое", "крем-суп"],
-            description: "шампиньоны, картофель, сливки, лук, масло",
-            link: "/recipe/2",
-        },
-        {
-            imgSrc: "../img/lasagna.jpg",
-            title: "Лазанья",
-            tags: ["второе", "мясное"],
-            description: "макаронные листы, мясо, сыр, молоко, томатная паста, сельдерей",
-            link: "/recipe/3",
-        },
-        {
-            imgSrc: "../img/chicken.JPG",
-            title: "Курица в томатном соусе",
-            tags: ["второе", "мясное"],
-            description: "курица, томаты, болгарский перец, томатная паста, чеснок",
-            link: "/recipe/4",
-        },
-    ]);
-
+    
     // Прокрутка по горизонтали
     const scrollContainerRef = useRef();
 
@@ -69,11 +38,12 @@ const Favorites = () => {
                 {recipes.map((recipe, index) => (
                     <div className="scrollable-item" key={index}>
                         <Card
-                            image={recipe.imgSrc}
-                            name={recipe.title}
+                            image={recipe.image}
+                            name={recipe.name}
                             tags={recipe.tags}
                             description={recipe.description}
-                            link={recipe.link}
+                            prepareTime={recipe.prepareTime}
+                            yourTime={recipe.yourTime}
                         />
                     </div>
                 ))}

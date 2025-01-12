@@ -5,12 +5,12 @@ import Select from 'react-select';
 
 const Sidebar = ({ initialFilters, onFilterChange }) => {
     const [filters, setFilters] = useState({
-        minTime: null,
-        maxTime: null,
+        minTime: 1,
+        maxTime: 720,
         types: [], // Список Id типов
         ingredients: [], // Список Id ингредиентов
         page: 1,
-        pageSize: 5,
+        //pageSize: 5,
         sortBy: 'time',
     });
 
@@ -23,20 +23,27 @@ const Sidebar = ({ initialFilters, onFilterChange }) => {
 
     // Функция для получения типов блюд
     const fetchDataTypes = async () => {
-        const response = await get('types'); // Замените get на ваш метод получения данных
-        setAvailableTypes(response.types); // Предположим, что response.types = [{ Id, TypeName }]
+        const response = await get('types');
+        setAvailableTypes(response.types); 
     };
 
     // Функция для получения ингредиентов
     const fetchDataIngredients = async () => {
-        const response = await get('ingredients'); // Замените get на ваш метод получения данных
-        setAvailableIngredients(response.ingredients); // Предположим, что response.ingredients = [{ Id, IngredientName }]
+        const response = await get('ingredients');
+        setAvailableIngredients(response.ingredients); 
     };
 
     // Загрузка данных при монтировании компонента
     useEffect(() => {
-        fetchDataTypes();
-        fetchDataIngredients();
+        const fetchData = async () => {
+            try {
+                await Promise.all([fetchDataTypes(), fetchDataIngredients()]);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     // Обработчик изменения фильтров
@@ -83,8 +90,8 @@ const Sidebar = ({ initialFilters, onFilterChange }) => {
             <div className="sort">
                 Сортировать по
                 <select className="selectInput" value={filters.sortBy} onChange={handleSortChange}>
-                    <option value="time">Время приготовления</option>
-                    <option value="popularity">Популярность</option>
+                    <option value="prepareTime">Время приготовления</option>
+                    <option value="yourTime">Ваше время</option>
                 </select>
             </div>
 
@@ -92,7 +99,7 @@ const Sidebar = ({ initialFilters, onFilterChange }) => {
                 <div>Тип блюда</div>
                 <Select
                     isMulti
-                    options={availableTypes.map(type => ({ value: type.Id, label: type.typeName }))}
+                    options={availableTypes.map(type => ({ value: type.id, label: type.typeName }))}
                     value={availableTypes.filter(type => filters.types.includes(type.id)).map(type => ({ value: type.id, label: type.typeName }))}
                     onChange={toggleType}
                     placeholder="Выберите типы блюд"

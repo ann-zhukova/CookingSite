@@ -2,18 +2,19 @@ import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Card from '../components/Card';
 import {getRecipes} from "../services/recipesService";
-
+import React  from "react";
 const Main = () => {
     const [cards, setCards] = useState([]);
     const [filters, setFilters] = useState({ types: [], ingredients: [] });
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [activeFilters, setActiveFilters] = useState({});
-
+    
     // Получение данных с бэка
     const fetchCards = async (filters = {}, page = 1) => {
         try {
-            const response = await getRecipes({ ...filters, page: currentPage });
+            console.log(filters);
+            const response = await getRecipes({ ...filters, page: page });
             console.log(response);
             setCards(response.recipes);
             setTotalPages(response.totalPages);

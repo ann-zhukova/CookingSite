@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 
 // Общая конфигурация для запросов
 const config = {
@@ -22,7 +23,13 @@ const get = async (route) => {
 // Функция для получения фильтрованных данных
 const getFiltered = async (route, queryParams) => {
     try {
-        const response = await axios.get(`/${route}`, { params: queryParams, ...config });
+        console.log(queryParams);
+        //const response = await axios.get(`/${route}`, { params: queryParams, ...config });
+        const response = await axios.get(`/${route}`, {
+            params: queryParams,
+            paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
+            ...config
+        });
         return response.data;
     } catch (error) {
         console.error("Error fetching filtered data:", error);

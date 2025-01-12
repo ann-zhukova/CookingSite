@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "qs": "^6.13.1",
     "react-select": "^5.9.0"
   }
 }
