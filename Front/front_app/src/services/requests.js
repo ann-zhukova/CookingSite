@@ -82,5 +82,14 @@ const deleteById = async (route, id) => {
     }
 };
 
+const AddToFavorites = async (id) => {
+    try {
+        console.log(`Добавлено в избранное: ${id}`);
+        const response = await axios.post(`/recipes/favorite/${id}`, config);
+    } catch (error) {
+        console.error('Ошибка при добавлении в избранное:', error);
+    }
+};
+
 // Экспорт всех функций
-export { get, getFiltered, getById, create, update, deleteById };
+export { get, getFiltered, getById, create, update, deleteById, AddToFavorites};

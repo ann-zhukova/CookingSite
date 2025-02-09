@@ -19,6 +19,15 @@ internal sealed class IngredientsRepository(PostgresContext context, IMapper map
         var recipes = await Context.Ingredients.AsNoTracking().ToListAsync();
         return Mapper.Map<Ingredient[]>(recipes);
     }
+    public async Task<IReadOnlyCollection<Ingredient>> GetIngredientsAsync(ICollection<Guid> ingredients)
+    {
+        var recipes = await Context
+            .Ingredients
+            .AsNoTracking()
+            .Where(i=> ingredients.Contains(i.Id))
+            .ToListAsync();
+        return Mapper.Map<List<Ingredient>>(recipes);
+    }
 
     public async Task<Ingredient> GetIngredientByIdAsync(Guid id)
     {

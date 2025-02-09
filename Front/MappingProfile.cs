@@ -28,6 +28,8 @@ public class MappingProfile : Profile
         CreateMap<TypeResponseJs, Domain.Types.Type>();
         CreateMap<Step, StepResponseJs>();
         CreateMap<StepResponseJs, Step>();
+        CreateMap<Step, StepRequestJs>();
+        CreateMap<StepRequestJs, Step>();
         CreateMap<Recipe, RecipeResponseJs>();
         CreateMap<RecipeResponseJs, Recipe>();
         CreateMap<RecipeRequestJs, Recipe>();

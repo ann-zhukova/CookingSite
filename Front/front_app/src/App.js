@@ -15,7 +15,7 @@ import Main from "./pages/Main";
 import Recipe from "./pages/Recipe";
 
 const App = () => (
-    <div>
+    <div className="root">
         <Header />
         <Routes>
             <Route path="/" element={<Main />} />

@@ -1,8 +1,9 @@
-﻿using JetBrains.Annotations;
+﻿using Domain.Base;
+using JetBrains.Annotations;
 
 namespace Domain.Recipes;
 
-public interface IRecipesRepository
+public interface IRecipesRepository: IBaseRepository
 {
     Task<IReadOnlyCollection<Recipe>> GetRecipesAsync();
     Task<Recipe> GetRecipeByIdAsync(Guid id);

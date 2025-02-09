@@ -27,16 +27,16 @@ internal sealed class  RecipeEntity: BaseEntity
     
     [ForeignKey("UserId")]
     public UserEntity User { get; set; }
-    
+
     [InverseProperty(nameof(IngredientEntity.Recipes))]
-    public ICollection<IngredientEntity> Ingredients { get; set; }
-    
+    public ICollection<IngredientEntity> Ingredients { get; set; } = new List<IngredientEntity>();
+
     [InverseProperty(nameof(StepEntity.Recipe))]
-    public ICollection<StepEntity> Steps { get; set; }
-    
+    public ICollection<StepEntity> Steps { get; set; } = new List<StepEntity>();
+
     [InverseProperty(nameof(TypeEntity.Recipes))]
-    public ICollection<TypeEntity> Types { get; set; }
-    
+    public ICollection<TypeEntity> Types { get; set; } = new List<TypeEntity>();
+
     [InverseProperty(nameof(UserEntity.FavoriteRecipes))]
-    public ICollection<UserEntity> UserFavorites { get; set; }
+    public ICollection<UserEntity> UserFavorites { get; set; } = new List<UserEntity>();
 }

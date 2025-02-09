@@ -57,9 +57,11 @@ const Main = () => {
         <main>
             <Sidebar filters={filters} onFilterChange={handleFilterChange} />
             <section>
+                <section className="articles">
                 {cards.map((card, index) => (
                     <Card key={index} {...card} />
                 ))}
+                </section>
                 <div className="pagination">
                     <button onClick={handlePrevPage} disabled={currentPage === 1}>
                         Назад

@@ -19,6 +19,15 @@ internal sealed class TypesRepository(PostgresContext context, IMapper mapper)
         var users = await Context.Types.AsNoTracking().ToListAsync();
         return Mapper.Map<Domain.Types.Type[]>(users);
     }
+    public async Task<IReadOnlyCollection<Domain.Types.Type>> GetTypesAsync(ICollection<Guid> types)
+    {
+        var users = await Context.
+            Types
+            .AsNoTracking()
+            .Where(t=> types.Contains(t.Id))
+            .ToListAsync();
+        return Mapper.Map<List<Domain.Types.Type>>(users);
+    }
 
     public async Task<Domain.Types.Type> GetTypeByIdAsync(Guid typeId)
     {

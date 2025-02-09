@@ -9,6 +9,6 @@ public interface IRecipeHelper
     Task<RecipesResponseJsModel> GetRecipes(RecipeFilter filter);
     Task<RecipeDetailsResponseJsModel> GetRecipe(Guid id);
 
-    Task<RecipeResponseJsModel> CreateRecipe(RecipeRequestJs recipeRequest);
-    Task<RecipeResponseJsModel> AddToFavorites(Guid id, Guid userId);
+    Task<RecipeResponseJsModel> CreateRecipe(RecipeRequestJs recipeRequest, String username);
+    Task<RecipeResponseJsModel> AddToFavorites(Guid id, String userName);
 }

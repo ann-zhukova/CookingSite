@@ -15,12 +15,10 @@ public class RecipeRequestJs
     
     public string Image { get; set; }
     
-    public Guid UserId { get; set; }
-    
-    public ICollection<IngredientRequestJs> Ingredients { get; set; }
+    public ICollection<Guid> Ingredients { get; set; }
     
     public ICollection<StepRequestJs> Steps { get; set; }
     
-    public ICollection<TypeRequestJs> Types { get; set; }
+    public ICollection<Guid> Types { get; set; }
     
 }

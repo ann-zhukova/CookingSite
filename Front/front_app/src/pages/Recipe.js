@@ -2,6 +2,7 @@
 import { getRecipe } from '../services/recipesService'; // Предполагается, что этот метод уже реализован
 import '../assets/css/recipe.css'
 import {useParams} from "react-router-dom";
+import {AddToFavorites} from "../services/requests";
 const Recipe = () => {
     const [recipe, setRecipe] = useState(null);
     const { recipeId } = useParams();
@@ -22,12 +23,20 @@ const Recipe = () => {
     if (!recipe) {
         return <p>Загрузка рецепта...</p>;
     }
-
+    const handleAddToFavorites = () => {
+        try {
+            const response = AddToFavorites(recipeId);
+        }
+        catch (error){
+            console.log(error);
+            alert("Ошибка добавления "+ error);
+        }
+    };
     return (
         <section>
             <div className="recipe-name">
                 <h1>{recipe.name}</h1>
-                <button className="recipe-favorite" title="Добавить в избранное">
+                <button className="recipe-favorite" title="Добавить в избранное" onClick={handleAddToFavorites}>
                     &#9734;
                 </button>
             </div>

@@ -19,7 +19,14 @@ internal sealed class StepsRepository(PostgresContext context, IMapper mapper)
         var users = await Context.Steps.AsNoTracking().ToListAsync();
         return Mapper.Map<Step[]>(users);
     }
-
+    public async Task<IReadOnlyCollection<Step>> GetStepsAsync(ICollection<Guid> steps)
+    {
+        var stepsEntity = await Context.Steps
+            .AsNoTracking()
+            .Where(s=> steps.Contains(s.Id))
+            .ToListAsync();
+        return Mapper.Map<List<Step>>(stepsEntity);
+    }
     public async Task<Step> GetStepByIdAsync(Guid id)
     {
         var step = await Context.Steps.AsNoTracking().SingleOrDefaultAsync(u => u.Id == id);

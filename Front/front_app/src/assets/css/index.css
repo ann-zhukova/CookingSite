@@ -1,4 +1,12 @@
-body {
+#root {
+    height: 100vh;
+}
+html{
+    height: 100%; /* Устанавливаем высоту для html и body */
+    margin: 0; /* Убираем отступы */
+}
+
+    body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; 
@@ -15,11 +23,12 @@ main{
     flex: 1;
 }
 
-footer {
-    margin-top: auto; /* Отодвигает footer вниз */
+.footer {
     padding: 16px; /* Отступы внутри footer */
     background-color: #DBDEDD;
     text-align: left; /* Выравнивание текста*/
+    position: relative; /* Позволяет футеру оставаться в потоке документа */
+    bottom: 0; /* Прикрепляет футер к низу контейнера */
 }
 
 aside {
@@ -137,11 +146,11 @@ a:hover {
   }
 
   .card-header{
-    padding: 12px;
+    padding: 6px;
   }
 
   .card-description{
-    padding: 12px;
+    padding: 6px;
   }
   
   section {
@@ -152,7 +161,12 @@ a:hover {
     justify-content: space-around;
     padding: 16px;
   }
-
+  
+.articles{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Создает 2 столбца одинаковой ширины */
+    gap: 16px; /* Промежуток между элементами */
+}
 button{
     color:#fff;
     background-color: #6D9785; 
@@ -214,8 +228,8 @@ button:hover {
   }
   .input-ranges[type='range']::-webkit-slider-thumb:hover {
     background: #eaefff;
-    border: 1px solid var(--color-primary);
-    outline: .5px solid var(--color-primary);
+    border: 1px solid #6D9785;
+    outline: .5px solid #6D9785;
   }
   
   .input-ranges[type='range']::-webkit-slider-thumb:active {
@@ -254,7 +268,7 @@ button:hover {
 
 .current-range {
     display: block;
-    color: var(--color-text);
+    color: #6D9785;
     margin-top: 8px;
     font-size: 14px;
   }
@@ -288,6 +302,12 @@ button:hover {
     display: flex;
     justify-content: center;
     margin-top: 16px;
+}
+
+.root{
+    display: flex;
+    flex-direction: column; /* Устанавливаем вертикальное направление */
+    min-height: 100vh;
 }
 
 

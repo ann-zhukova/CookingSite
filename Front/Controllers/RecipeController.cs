@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Core.Extensions;
 using Domain;
 using Front.Extensions;
@@ -30,9 +31,17 @@ public class RecipeController: Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateRecipe(RecipeRequestJs recipe)
+    public async Task<IActionResult> CreateRecipe([FromBody] RecipeRequestJs recipe)
     {
-        return await _recipeHelper.CreateRecipe(recipe).Convert(this.ToActionResult);
+        var userName = User.FindFirstValue(ClaimTypes.Name);
+        return await _recipeHelper.CreateRecipe(recipe, userName).Convert(this.ToActionResult);
     }
-    
+
+    [HttpPost]
+    [Route("favorite/{id}")]
+    public async Task<IActionResult> AddToFavorite(Guid id)
+    {
+        var userName = User.FindFirstValue(ClaimTypes.Name);
+        return await _recipeHelper.AddToFavorites(id, userName).Convert(this.ToActionResult);
+    }
 }

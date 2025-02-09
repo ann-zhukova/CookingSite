@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using Core.IoC;
 using DataAccess.Base;
+using DataAccess.Ingredients;
+using DataAccess.Steps;
+using DataAccess.Type;
+using DataAccess.Users;
 using Domain;
 using Domain.Recipes;
 using JetBrains.Annotations;
@@ -108,6 +112,7 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
             .Include(r=>r.Ingredients)
             .Include(r=>r.Types)
             .Include(r=>r.Steps)
+            .Include(r=>r.UserFavorites)
             .SingleOrDefaultAsync(r => r.Id == id);
         return Mapper.Map<Recipe>(recipe);
     }
@@ -120,14 +125,44 @@ internal sealed class RecipesRepository(PostgresContext context, IMapper mapper)
 
     public async Task<Guid> CreateRecipeAsync([NotNull] Recipe recipe)
     {
-        recipe.Id = Guid.NewGuid();
-        await Context.Recipes.AddAsync(Mapper.Map<RecipeEntity>(recipe));
-        return recipe.Id;
+        var recipeEntity = new RecipeEntity()
+        {
+            Image = recipe.Image,
+            Name = recipe.Name,
+            PrepareTime = recipe.PrepareTime,
+            UserId = recipe.UserId,
+            YourTime = recipe.YourTime,
+            Types = new List<TypeEntity>(),
+            Steps = new List<StepEntity>(),
+            Ingredients = new List<IngredientEntity>(),
+        };
+        var types = await Context.Types
+            .Where(g => recipe.Types.Select(s => s.Id).Contains(g.Id))
+            .ToListAsync();
+        foreach (var type in types)
+        {
+            recipeEntity.Types.Add(type);
+        }
+        var ingredients = await Context.Ingredients
+            .Where(g => recipe.Ingredients.Select(s => s.Id).Contains(g.Id))
+            .ToListAsync();
+        foreach (var ingredient in ingredients)
+        {
+            recipeEntity.Ingredients.Add(ingredient);
+        }
+        await Context.Recipes
+            .AddAsync(recipeEntity);
+        return recipeEntity.Id;
     }
 
     public async Task<Guid?> UpdateRecipeAsync([NotNull] Recipe recipe)
     {
-        var recipeEntity = await Context.Recipes.SingleOrDefaultAsync(u => u.Id == recipe.Id);
+        var recipeEntity = await Context.Recipes
+            .Include(r=>r.Ingredients)
+            .Include(r=>r.UserFavorites)
+            .Include(r=>r.Types)
+            .Include(r=>r.Steps)
+            .SingleOrDefaultAsync(u => u.Id == recipe.Id);
 
         if (recipeEntity == null)
         {

@@ -59,14 +59,15 @@ const AddRecipe = () => {
         const recipe = {
             name: recipeName,
             prepareTime: parseInt(prepareTime, 10),
-            dishTypes: selectedDishTypes,
-            imageUrl,
-            steps,
+            yourTime: yourTime,
+            types: selectedDishTypes,
+            image: imageUrl,
+            steps: steps.map((s, index) => ({stepNumber: index+1, stepDescription: s })),
             ingredients: selectedIngredients,
         };
 
         try {
-            const response = await axios.post('/api/recipes', recipe);
+            const response = await axios.post('/recipes', recipe);
             alert('Рецепт успешно добавлен!');
             console.log(response.data);
             resetForm();
