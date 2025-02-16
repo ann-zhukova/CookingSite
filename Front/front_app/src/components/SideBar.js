@@ -96,6 +96,11 @@ const Sidebar = ({ initialFilters, onFilterChange }) => {
             </div>
 
             <div className="filtration">
+                <TimeSlider
+                    minTime={filters.minTime}
+                    maxTime={filters.maxTime}
+                    onTimeChange={updateTimeRange}
+                />
                 <div>Тип блюда</div>
                 <Select
                     isMulti
@@ -112,12 +117,6 @@ const Sidebar = ({ initialFilters, onFilterChange }) => {
                     value={availableIngredients.filter(ingredient => filters.ingredients.includes(ingredient.id)).map(ingredient => ({ value: ingredient.id, label: ingredient.ingredientName }))}
                     onChange={toggleIngredient}
                     placeholder="Выберите ингредиенты"
-                />
-
-                <TimeSlider
-                    minTime={filters.minTime}
-                    maxTime={filters.maxTime}
-                    onTimeChange={updateTimeRange}
                 />
             </div>
         </aside>

@@ -183,7 +183,7 @@ const AddRecipe = () => {
                                 required
                             />
                             {index === steps.length - 1 && (
-                                <button type="button" onClick={addStep}>
+                                <button type="button" className="button-add" onClick={addStep}>
                                     Добавить шаг
                                 </button>
                             )}

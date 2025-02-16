@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef  } from 'react';
 import { get } from "../services/requests";
 //import '../assets/css/account.css'
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 const Cabinet = () => {
     const [userName, setUserName] = useState('');
@@ -32,7 +33,15 @@ const Cabinet = () => {
             <div className="cabinet-header">
                 <div className="buttons-container">
                     <h1>{userName}</h1>
-                    <button className="logout-button">Выход</button>
+                    <button className="logout-button" onClick={async ()=>{
+                        try {
+                            const response = await axios.post('users/logout');
+                            window.location.replace('/');
+                        }
+                        catch (error) {
+                            console.error('Logout failed', error);
+                        }
+                    }}>Выход</button>
                 </div>
             </div>
         </main>

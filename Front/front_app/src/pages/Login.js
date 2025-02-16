@@ -58,7 +58,7 @@ const Login = () => {
                 },
                 withCredentials: true,
             });
-            navigate("/cabinet")
+            window.location.replace('/account')
         } catch (error) {
             console.error('Ошибка при аутентификации:', error);
             alert('Неверный логин или пароль');

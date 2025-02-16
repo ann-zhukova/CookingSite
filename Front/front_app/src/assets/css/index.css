@@ -178,6 +178,17 @@ button{
     width: 187px;
     height: 38px;
 }
+.button-add{
+    color:#fff;
+    background-color: #6D9785;
+    border-radius: 12px;
+    padding: 12px;
+    margin: 8px;
+    border: none;
+    cursor: pointer;
+    width: 187px;
+    height: 48px;
+}
 button:hover {
     background-color: #3c544a;
 }

@@ -14,7 +14,7 @@ public class RecipeFilter
     
     // Параметры пагинации
     public int Page { get; set; } = 1;
-    public int PageSize { get; set; } = 6;
+    public int PageSize { get; set; } = 2;
     
     public string SortBy { get; set; }
 }
