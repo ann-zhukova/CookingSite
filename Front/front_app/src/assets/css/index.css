@@ -299,6 +299,7 @@ button:hover {
 .card-img {
     width: 150px;
     height: auto;
+    object-fit: contain;
     flex-shrink: 0;
 }
 

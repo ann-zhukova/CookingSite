@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddCore().AddDataAccess().AddFront();
+builder.Services.AddCore().AddDataAccess(builder.Configuration).AddFront();
 builder.Services.AddHttpContextAccessor();
 
 //подключаем аутентификацию со схемой Cookies
